@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'screens/home_screen.dart';
 import 'screens/setting_screen.dart';
 import 'screens/last_analysis_screen.dart';
+import 'screens/scan_screen.dart';
 import 'theme_provider.dart';
 import 'locale_provider.dart';
 
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomeScreen(),
         '/settings': (context) => const SettingsScreen(),
         '/last_analysis': (context) => const LastAnalysisScreen(),
+        '/scan': (context) => const ScanScreen(),
       },
     );
   }

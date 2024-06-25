@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/theme_provider.dart';
 import '/locale_provider.dart';
+import 'package:flutter/services.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ class SettingsScreen extends StatelessWidget {
             title: const Text('Changer de langue'),
             subtitle: Text('Langue actuelle: ${localeProvider.locale.languageCode}'),
             onTap: () {
-              localeProvider.setLocale(localeProvider.locale.languageCode == 'en' ? Locale('fr') : Locale('en'));
+              localeProvider.setLocale(localeProvider.locale.languageCode == 'en' ? const Locale('fr') : const Locale('en'));
             },
           ),
         ],
@@ -47,8 +48,20 @@ class SettingsScreen extends StatelessWidget {
               onPressed: () {},
             ),
             IconButton(
-              icon: const Icon(Icons.arrow_forward),
-              onPressed: () {},
+              icon: const Icon(Icons.arrow_back_sharp),
+              onPressed: () {
+                if (Navigator.canPop(context)) {
+                  Navigator.pop(context); // Pops the current route off the navigator.
+                } else {
+                  // Optionnel: Gérer le cas où il n'y a pas de page précédente (peut-être afficher un message ou fermer l'application)
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("No previous page!"),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                }
+              },
             ),
           ],
         ),
@@ -89,11 +102,21 @@ class SettingsScreen extends StatelessWidget {
                 },
               ),
               ListTile(
+                leading: const Icon(Icons.document_scanner),
+                title: const Text('Scanner'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/scan');
+                },
+              ),
+              ListTile(
                 leading: const Icon(Icons.exit_to_app),
                 title: const Text('Quitter'),
                 onTap: () {
-                  Navigator.pop(context); // Close the menu
-                  Navigator.pop(context); // Exit the app
+                  if (Navigator.canPop(context)) {
+                    Navigator.pop(context); // Pour fermer le menu modal
+                  }
+                  SystemNavigator.pop(); // Ferme l'application
                 },
               ),
             ],

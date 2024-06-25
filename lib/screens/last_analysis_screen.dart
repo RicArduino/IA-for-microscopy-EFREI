@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class LastAnalysisScreen extends StatelessWidget {
   const LastAnalysisScreen({Key? key}) : super(key: key);
@@ -51,8 +52,20 @@ class LastAnalysisScreen extends StatelessWidget {
               onPressed: () {},
             ),
             IconButton(
-              icon: const Icon(Icons.arrow_forward),
-              onPressed: () {},
+              icon: const Icon(Icons.arrow_back_sharp),
+              onPressed: () {
+                if (Navigator.canPop(context)) {
+                  Navigator.pop(context); // Pops the current route off the navigator.
+                } else {
+                  // Optionnel: Gérer le cas où il n'y a pas de page précédente (peut-être afficher un message ou fermer l'application)
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("No previous page!"),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                }
+              },
             ),
           ],
         ),
@@ -94,11 +107,21 @@ class LastAnalysisScreen extends StatelessWidget {
                 },
               ),
               ListTile(
+                leading: const Icon(Icons.document_scanner),
+                title: const Text('Scanner'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/scan');
+                },
+              ),
+              ListTile(
                 leading: const Icon(Icons.exit_to_app),
                 title: const Text('Quitter'),
                 onTap: () {
-                  Navigator.pop(context); // Close the menu
-                  Navigator.pop(context); // Exit the app
+                  if (Navigator.canPop(context)) {
+                    Navigator.pop(context); // Pour fermer le menu modal
+                  }
+                  SystemNavigator.pop(); // Ferme l'application
                 },
               ),
             ],

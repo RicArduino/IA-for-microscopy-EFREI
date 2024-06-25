@@ -135,10 +135,28 @@ class _ScanScreenState extends State<ScanScreen> {
                 },
               ),
               ListTile(
+                leading: const Icon(Icons.analytics),
+                title: const Text('Dernières Analyses'),
+                onTap: () {
+                  Navigator.pop(context);// Close the menu
+                  Navigator.pushNamed(context, '/last_analysis');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.document_scanner),
+                title: const Text('Scanner'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/scan');
+                },
+              ),
+              ListTile(
                 leading: const Icon(Icons.exit_to_app),
                 title: const Text('Quitter'),
                 onTap: () {
-                  Navigator.pop(context);
+                  if (Navigator.canPop(context)) {
+                    Navigator.pop(context); // Pour fermer le menu modal
+                  }
                   SystemNavigator.pop(); // Ferme l'application
                 },
               ),

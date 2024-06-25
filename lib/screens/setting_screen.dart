@@ -45,7 +45,10 @@ class SettingsScreen extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(Icons.camera_alt),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/scan');
+              },
             ),
             IconButton(
               icon: const Icon(Icons.arrow_back_sharp),

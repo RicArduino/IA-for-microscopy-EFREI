@@ -23,15 +23,27 @@ class SettingsScreen extends StatelessWidget {
             title: const Text('Mode sombre'),
             value: themeProvider.themeData.brightness == Brightness.dark,
             onChanged: (value) {
-              themeProvider.setTheme(value ? ThemeData.dark() : ThemeData.light());
+              themeProvider
+                  .setTheme(value ? ThemeData.dark() : ThemeData.light());
             },
           ),
           ListTile(
             title: const Text('Changer de langue'),
-            subtitle: Text('Langue actuelle: ${localeProvider.locale.languageCode}'),
+            subtitle:
+                Text('Langue actuelle: ${localeProvider.locale.languageCode}'),
             onTap: () {
-              localeProvider.setLocale(localeProvider.locale.languageCode == 'en' ? const Locale('fr') : const Locale('en'));
+              localeProvider.setLocale(
+                  localeProvider.locale.languageCode == 'en'
+                      ? const Locale('fr')
+                      : const Locale('en'));
             },
+          ),
+          const SizedBox(height: 20),
+          const Center(
+            child: Text(
+              'Version : 1.1.0',
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
           ),
         ],
       ),
@@ -54,7 +66,8 @@ class SettingsScreen extends StatelessWidget {
               icon: const Icon(Icons.arrow_back_sharp),
               onPressed: () {
                 if (Navigator.canPop(context)) {
-                  Navigator.pop(context); // Pops the current route off the navigator.
+                  Navigator.pop(
+                      context); // Pops the current route off the navigator.
                 } else {
                   // Optionnel: Gérer le cas où il n'y a pas de page précédente (peut-être afficher un message ou fermer l'application)
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -95,12 +108,11 @@ class SettingsScreen extends StatelessWidget {
                   Navigator.pop(context);
                 },
               ),
-              // last analysis
               ListTile(
                 leading: const Icon(Icons.analytics),
                 title: const Text('Dernières Analyses'),
                 onTap: () {
-                  Navigator.pop(context);// Close the menu
+                  Navigator.pop(context); // Close the menu
                   Navigator.pushNamed(context, '/last_analysis');
                 },
               ),

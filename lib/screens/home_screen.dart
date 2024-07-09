@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/services.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key); // Ajout du paramètre key pour optimiser la gestion des widgets
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,66 +11,84 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Accueil'),
         backgroundColor: Colors.teal,
       ),
-      body: SingleChildScrollView( // Enveloppe le contenu avec SingleChildScrollView
+      body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Container(
-              height: 300, // Fixe une hauteur pour le conteneur de l'image
+              height: 300,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/home_image.jpg'),
+                  image: AssetImage('assets/test.jpg'),
                   fit: BoxFit.cover,
                 ),
               ),
-              child: const Center(
-                child: Text(
-                  "",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    backgroundColor: Colors.black54,
-                  ),
-                ),
-              ),
+              child: const Center(),
             ),
-            Container(
-              color: Colors.white,
-              padding: const EdgeInsets.all(16),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "More Tech",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Card(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    elevation: 5,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            "Quelques informations",
+                            style: TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            "IA for Microscopy - EFREI",
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                          SizedBox(height: 8),
+                          Wrap(
+                            spacing: 8,
+                            children: <Widget>[
+                              Chip(
+                                label: Text('Software Engineering'),
+                                backgroundColor: Color(0xFFE4EAFF),
+                                labelStyle: TextStyle(color: Color(0xFF0D38CE)),
+                              ),
+                              Chip(
+                                label: Text('Biotechnology'),
+                                backgroundColor: Color(0xFFE4EAFF),
+                                labelStyle: TextStyle(color: Color(0xFF0D38CE)),
+                              ),
+                              Chip(
+                                label: Text('BI'),
+                                backgroundColor: Color(0xFFE4EAFF),
+                                labelStyle: TextStyle(color: Color(0xFF0D38CE)),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  SizedBox(height: 8),
-                  Text(
-                    "20 juin 2021",
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
-                  SizedBox(height: 8),
-                  Wrap(
-                    spacing: 8,
-                    children: <Widget>[
-                      Chip(label: Text('Software Engineering')),
-                      Chip(label: Text('Biotechnology')),
-                      Chip(label: Text('BI')),
-                    ],
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    "Bienvenue à BioCement AI Revolutionnez la construction durable avec la science de la biotechnologie. Notre application, BioCement AI, est a la pointe de l innovation en matière de construction écologique. Utilisant l'intelligence artificielle avancée, notre système est spécialement conçu pour détecter les bactéries Sporosarcina pasteurii à l'étape cruciale de biominéralisation. Ces bactéries jouent un rôle clé dans la production de bio-ciment, un matériau de construction durable qui pourrait radicalement transformer le secteur de la construction. Pourquoi est-ce important ? La biominéralisation des bactéries Sporosarcina pasteurii est essentielle pour produire un ciment écologique. Cependant, exploiter cette capacité requiert précision et timing : les bactéries doivent être identifiées au moment optimal de leur cycle de vie pour maximiser l'efficacité du processus de biominéralisation. C'est ici que notre IA intervient. Comment fonctionne notre application ? BioCement AI utilise des modèles d apprentissage profond pour analyser des échantillons de cultures bactériennes en temps réel, assurant que seule la phase optimale de biominéralisation est utilisée dans la production de bio-ciment. Cette précision non seulement améliore la qualité et la durabilité du ciment produit mais contribue également à une construction plus écologique et durable. Rejoignez-nous dans cette revolution verte Explorez notre site pour en savoir plus sur comment BioCement AI peut vous aider a adopter des pratiques de construction plus vertes et plus efficaces. Que vous soyez un professionnel de l industrie de la construction, un chercheur, ou simplement intéressé par la durabilité, BioCement AI a quelque chose à offrir. Ensemble, construisons un avenir plus durable.",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Text('la bactérie pasteurie'), // 'const' cannot be used if text might change
-                      Text('le Biociment '), // same as above
-                    ],
+                  const SizedBox(height: 16),
+                  Card(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    elevation: 5,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        "Bienvenue à BioCement AI. Notre application, BioCement AI, utilise l'intelligence artificielle pour détecter les bactéries Sporosarcina pasteurii à l'étape cruciale de biominéralisation. Ces bactéries jouent un rôle clé dans la production de bio-ciment, cependant, exploiter cette capacité requiert précision et timing : les bactéries doivent être identifiées au moment optimal de leur cycle de vie pour maximiser. C'est ici que notre app intervient. Il suffit de choisir une photo dans sa gallerie ou d'en prendre une et l'app s'occupera d'analyser l'image et de donner son Go !",
+                        style:
+                            TextStyle(fontSize: 16, color: Color(0xFF2E2D2D)),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -98,7 +115,8 @@ class HomeScreen extends StatelessWidget {
               icon: const Icon(Icons.arrow_back_sharp),
               onPressed: () {
                 if (Navigator.canPop(context)) {
-                  Navigator.pop(context); // Pops the current route off the navigator.
+                  Navigator.pop(
+                      context); // Pops the current route off the navigator.
                 } else {
                   // Optionnel: Gérer le cas où il n'y a pas de page précédente (peut-être afficher un message ou fermer l'application)
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -129,6 +147,7 @@ class HomeScreen extends StatelessWidget {
                 title: const Text('Accueil'),
                 onTap: () {
                   Navigator.pop(context); // Close the menu
+                  Navigator.pushReplacementNamed(context, '/home');
                 },
               ),
               ListTile(
@@ -136,15 +155,14 @@ class HomeScreen extends StatelessWidget {
                 title: const Text('Paramètres'),
                 onTap: () {
                   Navigator.pop(context); // Close the menu
-                  Navigator.pushNamed(context, '/settings'); // Navigate to Settings
+                  Navigator.pushNamed(context, '/settings');
                 },
               ),
-              // last analysis
               ListTile(
                 leading: const Icon(Icons.analytics),
                 title: const Text('Dernières Analyses'),
                 onTap: () {
-                  Navigator.pop(context);// Close the menu
+                  Navigator.pop(context); // Close the menu
                   Navigator.pushNamed(context, '/last_analysis');
                 },
               ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io'; // Import nécessaire pour File
+import 'loading_screen.dart';
+import 'result_screen.dart';
+import 'dart:io';
 
 class ScanScreen extends StatefulWidget {
   const ScanScreen({Key? key}) : super(key: key);
@@ -15,22 +17,60 @@ class _ScanScreenState extends State<ScanScreen> {
   XFile? imageFile;
 
   void _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      imageFile = pickedFile;
-    });
+    try {
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          imageFile = pickedFile;
+        });
+      }
+    } catch (e) {
+      _showError("Failed to pick image: $e");
+    }
   }
 
   void _takePhoto() async {
-    final photo = await _picker.pickImage(source: ImageSource.camera);
-    setState(() {
-      imageFile = photo;
-    });
+    try {
+      final photo = await _picker.pickImage(source: ImageSource.camera);
+      if (photo != null) {
+        setState(() {
+          imageFile = photo;
+        });
+      }
+    } catch (e) {
+      _showError("Failed to take photo: $e");
+    }
   }
 
-  void processImage() {
-    print("Process the image here...");
-    // Future logic for processing the image
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  void processImage() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const LoadingScreen();
+      },
+    );
+
+    // Ici ca aurait été l'appel à l'API hin
+    await Future.delayed(const Duration(seconds: 5));
+
+    Navigator.of(context).pop();
+
+    // Ici par exemple on aurait navigué vers la page des résultats hin
+    _showResults();
+  }
+
+  void _showResults() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ResultScreen()),
+    );
   }
 
   @override
@@ -51,22 +91,32 @@ class _ScanScreenState extends State<ScanScreen> {
                   width: double.infinity,
                   child: Image.file(File(imageFile!.path), fit: BoxFit.cover),
                 ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               if (imageFile == null) ...[
                 ElevatedButton(
                   onPressed: _pickImage,
                   child: const Text('Choose from Gallery'),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: _takePhoto,
                   child: const Text('Take a Photo'),
                 ),
               ],
               if (imageFile != null)
-                ElevatedButton(
-                  onPressed: processImage,
-                  child: const Text('Scan'),
+                Column(
+                  children: [
+                    ElevatedButton(
+                      onPressed: processImage,
+                      child: const Text('Scan'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => setState(() {
+                        imageFile = null;
+                      }),
+                      child: const Text('Retake Photo'),
+                    ),
+                  ],
                 ),
             ],
           ),
@@ -138,7 +188,7 @@ class _ScanScreenState extends State<ScanScreen> {
                 leading: const Icon(Icons.analytics),
                 title: const Text('Dernières Analyses'),
                 onTap: () {
-                  Navigator.pop(context);// Close the menu
+                  Navigator.pop(context);
                   Navigator.pushNamed(context, '/last_analysis');
                 },
               ),
@@ -166,4 +216,40 @@ class _ScanScreenState extends State<ScanScreen> {
       },
     );
   }
+}
+
+@override
+Widget build(BuildContext context) {
+  return const Scaffold(
+    body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            'Chargement',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 20),
+          CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40.0),
+            child: Text(
+              'Patientez le temps que les résultats soient interprétés :)',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }

@@ -10,15 +10,21 @@ class LastAnalysisScreen extends StatelessWidget {
     final List<Map<String, dynamic>> analyses = [
       {
         'title': 'Analyse 1',
-        'date': 'xx/xx/XXXX',
-        'description': 'Description de l\'analyse 1...',
-        'status': 'Go'
+        'date': '26/05/2024',
+        'description':
+            'Description de l\'analyse 1 : Sur le chantier de villejuif se trouve un chantier ou il faut construire un batiment. Le bio-ciment est nécéssaire pour les fondations.',
+        'status': 'Go',
+        'user': 'Dupont',
+        'location': 'Villejuif'
       },
       {
         'title': 'Analyse 2',
-        'date': 'xx/xx/XXXX',
-        'description': 'Description de l\'analyse 2...',
-        'status': 'No Go'
+        'date': '14/06/2024',
+        'description':
+            'Description de l\'analyse 2: Sur le chantier de paris se trouve un chantier ou il faut construire un batiment. Le bio-ciment est nécéssaire pour les fondations.',
+        'status': 'No Go',
+        'user': 'Wallace',
+        'location': 'Paris'
       },
       // Add more analyses as needed
     ];
@@ -29,49 +35,47 @@ class LastAnalysisScreen extends StatelessWidget {
         backgroundColor: Colors.teal,
       ),
       body: ListView.builder(
+        padding: EdgeInsets.all(16),
         itemCount: analyses.length,
         itemBuilder: (context, index) {
-          return AnalysisCard(
-            title: analyses[index]['title'],
-            date: analyses[index]['date'],
-            description: analyses[index]['description'],
-            status: analyses[index]['status'],
+          return Center(
+            child: AnalysisCard(
+              title: analyses[index]['title'],
+              date: analyses[index]['date'],
+              description: analyses[index]['description'],
+              status: analyses[index]['status'],
+              user: analyses[index]['user'],
+              location: analyses[index]['location'],
+            ),
           );
         },
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () => _showMenu(context),
-            ),
-            IconButton(
-              icon: const Icon(Icons.camera_alt),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/scan');
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.arrow_back_sharp),
-              onPressed: () {
-                if (Navigator.canPop(context)) {
-                  Navigator.pop(context); // Pops the current route off the navigator.
-                } else {
-                  // Optionnel: Gérer le cas où il n'y a pas de page précédente (peut-être afficher un message ou fermer l'application)
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("No previous page!"),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Accueil',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.analytics),
+            label: 'Analyses',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Paramètres',
+          ),
+        ],
+        currentIndex: 1, // Change this to set the current tab
+        selectedItemColor: Colors.teal,
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.pushReplacementNamed(context, '/home');
+          } else if (index == 1) {
+            Navigator.pushReplacementNamed(context, '/last_analysis');
+          } else if (index == 2) {
+            Navigator.pushNamed(context, '/settings');
+          }
+        },
       ),
     );
   }
@@ -105,7 +109,7 @@ class LastAnalysisScreen extends StatelessWidget {
                 leading: const Icon(Icons.analytics),
                 title: const Text('Dernières Analyses'),
                 onTap: () {
-                  Navigator.pop(context);// Close the menu
+                  Navigator.pop(context); // Close the menu
                   Navigator.pushNamed(context, '/last_analysis');
                 },
               ),
@@ -140,6 +144,8 @@ class AnalysisCard extends StatelessWidget {
   final String date;
   final String description;
   final String status;
+  final String user;
+  final String location;
 
   const AnalysisCard({
     Key? key,
@@ -147,41 +153,87 @@ class AnalysisCard extends StatelessWidget {
     required this.date,
     required this.description,
     required this.status,
+    required this.user,
+    required this.location,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      elevation: 5,
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              title,
-              style: const TextStyle(
-                  fontSize: 20, // Taille de police ajustée
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black // Définissez la couleur selon vos besoins
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                      fontSize: 20, // Taille de police ajustée
+                      fontWeight: FontWeight.bold,
+                      color: Color(
+                          0xFF2E2D2D) // Changement de couleur de la police
+                      ),
+                ),
+                Text(
+                  status,
+                  style: TextStyle(
+                      color: status == 'Go' ? Colors.green : Colors.red,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
             const SizedBox(height: 5),
-            Text(date),
-            const SizedBox(height: 5),
-            Text(description),
-            const SizedBox(height: 10),
             Text(
-              status,
+              date,
               style: TextStyle(
-                  color: status == 'Go' ? Colors.green : Colors.red,
-                  fontWeight: FontWeight.bold
+                color: Color(0xFF2E2D2D), // Changement de couleur de la police
               ),
             ),
+            const SizedBox(height: 5),
+            Row(
+              children: [
+                Chip(
+                  label: Text(
+                    user,
+                    style: const TextStyle(
+                        color: Color(
+                            0xFF2E2D2D)), // Changement de couleur de la police
+                  ),
+                  backgroundColor: Color(0xFFE4EAFF),
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                ),
+                const SizedBox(width: 10),
+                Chip(
+                  label: Text(
+                    location,
+                    style: const TextStyle(
+                        color: Color(
+                            0xFF2E2D2D)), // Changement de couleur de la police
+                  ),
+                  backgroundColor: Color(0xFFE4EAFF),
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                ),
+              ],
+            ),
+            const SizedBox(height: 5),
+            Text(
+              description,
+              style: TextStyle(
+                color: Color(0xFF2E2D2D), // Changement de couleur de la police
+              ),
+            ),
+            const SizedBox(height: 10),
           ],
         ),
       ),
     );
   }
 }
-
